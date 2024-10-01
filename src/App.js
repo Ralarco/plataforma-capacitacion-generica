@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import { UserProvider } from "./contexts/UserDataContext";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [username, setUsername] = useState("John Doe");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider>
+    <BrowserRouter>
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
+      <Routes>
+        <Route
+          path="/"
+          element={<Login darkMode={darkMode} setDarkMode={setDarkMode} />}
+        ></Route>
+        <Route
+          path="/dashboard"
+          element={<Dashboard darkMode={darkMode} setDarkMode={setDarkMode} />}
+        ></Route>
+      </Routes>
+    </BrowserRouter>
+    </UserProvider>
   );
 }
 
