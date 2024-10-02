@@ -98,9 +98,7 @@ app.get('/user/profile', async (req, res) => {
         }
       });
       
-      // Imprime la respuesta completa
-      /* console.log("Respuesta de core_user_get_users_by_field: ", userProfileResponse.data); */
-      
+  
       // Verifica si la respuesta contiene un array y accede a su primer elemento
       const userData = userProfileResponse.data[0];
       /* console.log(userProfileResponse.data[0]) */
@@ -111,6 +109,7 @@ app.get('/user/profile', async (req, res) => {
         email: userData.email,
         profileimageurl: userData.profileimageurl,
         firstname: userData.firstname,
+        id: userData.id
 
       });
     } catch (error) {

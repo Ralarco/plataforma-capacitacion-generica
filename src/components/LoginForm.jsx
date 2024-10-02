@@ -24,11 +24,22 @@ function LoginForm() {
       if (response.data.token) {
         // Guarda el token en el localStorage
         localStorage.setItem('token', response.data.token);
-        
-        // Actualiza el contexto del usuario (opcional, según tu implementación)
-        loginUser(response.data.token);
-
-        // Redirige a la ruta /dashboard
+        try {
+          const respUserData = await axios.get(`${config.URL_HOST}/user/profile`, {
+            headers: {
+              Authorization: `Bearer ${response.data.token}`,
+            },
+          });
+  
+          if (respUserData.data) {
+            loginUser(respUserData.data); // Actualiza el contexto con los datos del usuario
+            /* console.log(respUserData.data) */
+            //setLoading(false);
+          }
+        } catch (error) {
+          toast.error('Error al obtener los datos del usuario');
+          //setLoading(false);
+        }
         navigate('/dashboard');
       }
     } catch (error) {

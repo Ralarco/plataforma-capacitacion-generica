@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaHome, FaUser, FaCog, FaBars, FaChevronLeft  } from 'react-icons/fa';
+import { FaHome, FaUser, FaCog, FaBars, FaChevronLeft, FaChevronRight   } from 'react-icons/fa';
+import LogoutButton from './LogOutButton';
 
 function Sidebar({ isOpen, setIsOpen }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -29,12 +30,12 @@ function Sidebar({ isOpen, setIsOpen }) {
 
       {/* Sidebar */}
       <aside
-        className={` bg-slate-300 dark:bg-gray-900 text-gray-900 dark:text-white p-4 space-y-4 md:flex flex-col ${
+        className={` bg-slate-300 dark:bg-gray-800 text-gray-900 dark:text-white p-4 space-y-4 md:flex flex-col ${
           isMobileOpen ? 'block' : 'hidden md:block'
         } ${isOpen ? 'w-64' : 'w-16'} transition-all duration-300 h-full`}
       >
         <button onClick={toggleSidebar} className="mb-4">
-          {isOpen ? <FaChevronLeft /> : 'Mostrar'}
+          {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
         </button>
 
         {menuItems.map((item, index) => (
@@ -46,6 +47,11 @@ function Sidebar({ isOpen, setIsOpen }) {
             {isOpen && <span>{item.label}</span>}
           </div>
         ))}
+
+        <div className='justify-self-end'>
+        <LogoutButton isOpen={isOpen} />
+        </div>
+        
       </aside>
     </div>
   );

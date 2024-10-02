@@ -1,25 +1,27 @@
 import React from 'react';
 import { useUser } from '../contexts/UserDataContext';
 import { FaSun, FaMoon } from 'react-icons/fa';
+import LogoutButton from './LogOutButton';
 
 function Header({darkMode, setDarkMode }) {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
 
-  const firstName = user ? user.fullname.split(" ")[0] : null;
+  const firstName = user ? user.fullname.split(" ")[0] : "";
   
   return (
-    <header className="flex items-center justify-between bg-gray-800 dark:bg-gray-900 text-white p-4">
+    <header className="flex items-center justify-between bg-gray-500 dark:bg-gray-900 text-white p-4">
       <div className="flex items-center space-x-4">
         <img src="/logo.png" alt="Logo" className="h-8 w-8" />
         <h1 className="text-xl font-bold">IntegraIdeas</h1>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 text-sm">
         {user ? (
           <span>Bienvenido, {firstName}</span>
         ) : (
           ''
         )}
+
 
         <button
           onClick={() => setDarkMode(!darkMode)}
