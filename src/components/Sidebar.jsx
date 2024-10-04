@@ -30,29 +30,31 @@ function Sidebar({ isOpen, setIsOpen }) {
 
       {/* Sidebar */}
       <aside
-        className={` bg-slate-300 dark:bg-gray-800 text-gray-900 dark:text-white p-4 space-y-4 md:flex flex-col ${
-          isMobileOpen ? 'block' : 'hidden md:block'
-        } ${isOpen ? 'w-64' : 'w-16'} transition-all duration-300 h-full`}
+  className={`bg-slate-300 dark:bg-gray-800 text-gray-900 dark:text-white p-4 space-y-4 md:flex flex-col ${
+    isMobileOpen ? 'block' : 'hidden md:block'
+  } ${isOpen ? 'w-64' : 'w-16'} transition-all duration-300 h-full`}
+>
+  <button onClick={toggleSidebar} className=" self-end mb-4">
+    {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
+  </button>
+
+  <div className="flex-grow">
+    {menuItems.map((item, index) => (
+      <div
+        key={index}
+        className="flex items-center space-x-4 p-2 hover:bg-gray-700 rounded"
       >
-        <button onClick={toggleSidebar} className="mb-4">
-          {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-        </button>
+        <div>{item.icon}</div>
+        {isOpen && <span>{item.label}</span>}
+      </div>
+    ))}
+  </div>
 
-        {menuItems.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center space-x-4 p-2 hover:bg-gray-700 rounded"
-          >
-            <div>{item.icon}</div>
-            {isOpen && <span>{item.label}</span>}
-          </div>
-        ))}
+  <div className="mt-auto">
+    <LogoutButton isOpen={isOpen} />
+  </div>
+</aside>
 
-        <div className='justify-self-end'>
-        <LogoutButton isOpen={isOpen} />
-        </div>
-        
-      </aside>
     </div>
   );
 }

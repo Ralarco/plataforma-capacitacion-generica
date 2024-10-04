@@ -15,7 +15,47 @@ app.use(cors());
 app.use(express.json());
 
 // Ruta para obtener los cursos de un usuario
+// Ruta para obtener los cursos de un usuario logueado
 app.get('/courses/:userid', async (req, res) => {
+  const { userid } = req.params;
+  const token = req.headers.authorization?.split(' ')[1]; // Extraer el token del header Authorization
+
+  if (!token) {
+      return res.status(401).json({ error: 'Token no proporcionado' });
+  }
+
+  try {
+      // Hacer la solicitud a Moodle para obtener los cursos del usuario
+      const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+          params: {
+              wstoken: token,
+              wsfunction: 'core_enrol_get_users_courses',
+              moodlewsrestformat: 'json',
+              userid: userid
+          }
+      });
+
+      // Verificar si se obtuvieron cursos
+      if (response.data && response.data.length > 0) {
+          res.json(response.data); // Devolver los cursos obtenidos
+          console.log(response.data)
+      } else {
+          res.status(404).json({ message: 'No se encontraron cursos para este usuario' });
+      }
+  } catch (error) {
+      // Verificar el tipo de error y manejarlo de forma adecuada
+      if (error.response && error.response.status === 403) {
+          res.status(403).json({ error: 'Acceso denegado. Token inválido o no autorizado.' });
+      } else {
+          console.error('Error al obtener los cursos:', error);
+          res.status(500).json({ error: 'Error al obtener los cursos' });
+      }
+  }
+});
+
+
+
+/* app.get('/courses/:userid', async (req, res) => {
     const { userid } = req.params;
     try {
         const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
@@ -31,7 +71,7 @@ app.get('/courses/:userid', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los cursos' });
     }
-});
+}); */
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);

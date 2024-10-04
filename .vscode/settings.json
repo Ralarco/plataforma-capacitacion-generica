@@ -1,0 +1,6 @@
+{
+    "millionLint.disableVscode": true,
+    "millionLint.disableOutdatedVersionMessage": true,
+    "millionLint.disableAnnotations": true,
+    "millionLint.theme": "million"
+}

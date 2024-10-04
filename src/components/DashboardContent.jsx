@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../contexts/UserDataContext';
 import { useNavigate } from 'react-router-dom';
+import Loader from './Loader';
+import MyProfile from './dashboard/MyProfile';
+import MyCourses from './dashboard/MyCourses';
 
 function DashboardContent() {
   const { user, setUser } = useUser(); // Extrae y actualiza los datos del usuario desde el contexto
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user'); // Verifica si hay un usuario en localStorage
@@ -21,21 +25,14 @@ function DashboardContent() {
   }, [user, setUser, navigate]);
 
   if (loading) {
-    return <p>Cargando datos...</p>;
+    return <p><Loader /></p>;
   }
 
   return (
-    <main className="flex flex-row bg-slate-50 p-6 rounded-md shadow-md m-3 h-fit w-full">
-      <div>
-        {user?.profileimageurl && <img src={user.profileimageurl} alt="Foto de perfil" className="rounded-full w-24 h-24 mt-4" />}
-      </div>
-
-      <div className='my-auto ml-5'>
-        <h1 className="text-xl font-bold">Bienvenido, {user?.fullname}</h1>
-        <p>Email: {user?.email}</p>
-        <p>Id: {user?.userid}</p>
-      </div>
-    </main>
+    <div className=' gap-5 w-full pr-10'>
+      <MyProfile user={ user } />
+      <MyCourses id={ user.id } token={ token } />
+    </div>
   );
 }
 
