@@ -11,7 +11,7 @@ function MyCourses( { id, token } ) {
   // Función para obtener los cursos del usuario
   const fetchCourses = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/courses/${id}`, {
+      const response = await axios.get(`${config.URL_HOST}/courses/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Enviar el token en el header
         },
