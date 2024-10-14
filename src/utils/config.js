@@ -1,3 +1,3 @@
 module.exports = {
-    URL_HOST: "http://localhost:3000",
+    URL_HOST: "https://plataforma-capacitacion-generica.onrender.com",
 }
